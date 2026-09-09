@@ -1,0 +1,18 @@
+# Environment used for the results reported in the paper.
+#
+# neuralprophet 0.4.2 is an old release with an API that differs from current
+# versions, so the pin is required rather than advisory. torch 1.11.0 has no
+# wheels for recent Python versions.
+#
+# TODO before archiving: run `pip freeze` on the cluster and replace the
+# unpinned lines below with the exact versions, and record the Python version.
+
+neuralprophet==0.4.2
+torch==1.11.0
+
+pandas
+numpy
+scipy
+scikit-learn
+matplotlib>=3.4     # Figure.subfigures, used by real_data_decomposition.ipynb
+jupyter
