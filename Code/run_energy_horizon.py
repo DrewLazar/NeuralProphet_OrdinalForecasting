@@ -6,20 +6,13 @@ Reads energy_data.csv (Beijing format: datetime, load, temp, occupancy binaries,
 load_category). Fits the two-stage model at fixed origins for the horizon given
 in $HORIZON, pools the test-block predictions, and writes per-fold and pooled
 summaries plus a persistence baseline.
-
-Energy specifics: temp is lagged+future; the occupancy binaries are future-only
-(needs the PATCHED OrdinalNeuralProphet_v2.py). FIRST_ORIGIN=2000. Because the
-series is long (~11.6k hours), the number of non-overlapping origins can be huge
-at short horizons, so MAX_ORIGINS caps how many are used (evenly subsampled) to
-keep each job's runtime reasonable -- ~100 origins already gives a stable pooled
-estimate.
 """
 
 import os
 import numpy as np
 import pandas as pd
 from sklearn.metrics import cohen_kappa_score
-from OrdinalNeuralProphet_v2 import OrdinalNeuralProphet
+from OrdinalNeuralProphet import OrdinalNeuralProphet
 
 DATA        = os.environ.get('ENERGY_CSV', 'energy_data.csv')
 OUTDIR      = os.environ.get('OUTDIR', 'energy_out')
