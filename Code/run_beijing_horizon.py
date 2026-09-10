@@ -12,7 +12,7 @@ import sys
 import numpy as np
 import pandas as pd
 from sklearn.metrics import cohen_kappa_score
-from OrdinalNeuralProphet_v2 import OrdinalNeuralProphet
+from OrdinalNeuralProphet import OrdinalNeuralProphet
 
 # --- config ---
 DATA = os.environ.get('BEIJING_CSV', 'BeijingAQI_data.csv')
