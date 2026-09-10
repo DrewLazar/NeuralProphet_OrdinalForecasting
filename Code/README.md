@@ -2,30 +2,31 @@
 
 ## Simulation
 
-`OrdinalNPnotebook.ipynb` runs the simulation study and writes Tables 3–6 and
-Figures 2–5. Needs the three modules below in the same directory, and
-`../data/BeijingAQI_data.csv` for the smoke test and the noise-ratio cell.
-Outputs go to `figures/` and `results/`. Run top to bottom; about an hour.
+`OrdinalNPnotebook.ipynb` produces Tables 3–6 and Figures 2–5. Needs
+`OrdinalNeuralProphet.py`, `simulate_ordinal_ts.py` and `run_experiments.py` in
+the same directory, plus `../data/BeijingAQI_data.csv`. Run top to bottom;
+about an hour.
+
+## Real data
 
 | File | |
 |---|---|
-| `OrdinalNeuralProphet.py` | the two-stage method: rolling-origin blind multi-step forecasting, and the Nelder–Mead threshold search with top-*m* averaging |
-| `simulate_ordinal_ts.py` | data-generating process, including piecewise-linear trends |
-| `run_experiments.py` | reference configuration (`BASE_SIM`, `BASE_MODEL`) and the multi-seed experiment runners |
+| `run_beijing_horizon.py`, `run_energy_horizon.py` | horizon ladders, Tables 9 and 10. See the matching `launch_*.sh` |
+| `beijing_logistic_baselines_sweep.R`, `energy_logistic_baselines_sweep.R` | multinomial logistic baselines, Table 8. `AR_SPEC=fixed` is what the paper reports |
+| `real_data_decomposition.ipynb` | component SDs (Table 11) and Figures 8–9 |
+| `make_ordinal_series_figure.py` | Figure 6 |
+| `make_energy_excerpt.R` | builds the public energy excerpt in `../data/` |
 
-Constructing `OrdinalNeuralProphet` fits the model, so there is no separate
-`.fit()` call.
+The energy cells in `real_data_decomposition.ipynb` need the full load record,
+which is not redistributed. The Beijing half runs from the repository as-is.
 
-## Reproducibility
+## Core modules
 
-Each run is determined by its seed, injected into both the data generation and
-the model fitting. The reference results pool 40 seeds (22–61); the noise sweep
-uses 20 per level (42–61), so its σ = 0.25 row differs slightly from Table 4.
+`OrdinalNeuralProphet.py` implements the two-stage method: the rolling-origin
+loop for blind multi-step forecasting, and the Nelder–Mead threshold search
+with top-*m* averaging. Constructing the object fits the model, so there is no
+separate `.fit()`.
 
-Single-seed figure cells can differ from the paper in the third decimal because
-the torch fit is not bit-reproducible across runs. The multi-seed tables
-reproduce exactly.
-
-Pinned to `neuralprophet==0.4.2` and `torch==1.11.0`; see `../requirements.txt`.
-Later NeuralProphet versions change the API and the learning-rate finder, so the
-pin is required rather than advisory.create code folder
+`simulate_ordinal_ts.py` is the data-generating process, including
+piecewise-linear trends. `run_experiments.py` holds the reference
+configuration (`BASE_SIM`, `BASE_MODEL`) and the multi-seed runners.
